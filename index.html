@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+<title>Токенізована нерухомість простими словами — безкоштовні відеоуроки</title>
+<meta name="description" content="Пройдіть коротку анкету (3 питання) — і отримайте безкоштовний набір відеоуроків, який простими словами пояснює, як влаштована токенізована нерухомість." />
+
+<!-- ============ META PIXEL ============ -->
+<!-- 🔴 ВСТАВТЕ СЮДИ ВАШ PIXEL ID замість YOUR_PIXEL_ID (у двох місцях) -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', 'YOUR_PIXEL_ID');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=YOUR_PIXEL_ID&ev=PageView&noscript=1"/></noscript>
+<!-- ========== END META PIXEL ========== -->
+
+<style>
+:root{
+  --app-h: 100vh;               /* перезаписується через window.innerHeight */
+  --navy: #0e7a54;              /* смарагд (primary) */
+  --navy-dark: #0a5a41;
+  --navy-deep: #06392a;
+  --navy-soft: #e7f5ee;
+  --gold: #d4af37;
+  --gold-2: #e7c667;
+  --gold-soft: #fbf4dd;
+  --ink: #0b2119;
+  --muted: #5f7a6f;
+  --line: #d6e8df;
+  --bg: #ffffff;
+  --bg-soft: #eef7f2;
+  --ok: #0e7a54;
+  --radius: 18px;
+  --shadow: 0 10px 34px rgba(14,122,84,.14);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{margin:0;padding:0;}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  color:var(--ink);
+  background:var(--bg-soft);
+  overscroll-behavior:none;
+}
+#app{
+  position:relative;
+  width:100%;
+  max-width:520px;
+  margin:0 auto;
+  height:var(--app-h);
+  background:var(--bg);
+  overflow:hidden;
+}
+
+/* ===== Екрани ===== */
+.screen{
+  position:absolute; inset:0;
+  display:none;
+  flex-direction:column;
+  padding:14px 16px calc(14px + env(safe-area-inset-bottom));
+  opacity:0;
+  transform:translateY(8px);
+  transition:opacity .25s ease, transform .25s ease;
+}
+.screen.active{ display:flex; opacity:1; transform:none; }
+.screen.center{ align-items:center; justify-content:flex-start; text-align:center; }
+.scroll{ overflow-y:auto; -webkit-overflow-scrolling:touch; }
+
+/* ===== Інтро (без скролу — все в один екран) ===== */
+.intro-flow{
+  flex:1; min-height:0; overflow:hidden;
+  display:flex; flex-direction:column;
+  justify-content:space-between; gap:10px;
+}
+h1{ font-size:24px; line-height:1.18; margin:2px 0 0; letter-spacing:-.01em; }
+h1 .gold{
+  background:linear-gradient(120deg,var(--gold),#b8901f);
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+}
+.lead{ color:var(--muted); font-size:14px; line-height:1.4; margin:0; }
+
+.bullets{ list-style:none; margin:0; padding:0; display:grid; gap:7px; }
+.bullets li{
+  display:flex; gap:9px; align-items:center;
+  font-size:13.5px; line-height:1.3;
+  background:var(--navy-soft); border:1px solid var(--line);
+  padding:9px 11px; border-radius:12px;
+  opacity:0; transform:translateY(6px);
+  animation:bulletIn .45s ease forwards;
+}
+.bullets li:nth-child(1){ animation-delay:.05s; }
+.bullets li:nth-child(2){ animation-delay:.13s; }
+.bullets li:nth-child(3){ animation-delay:.21s; }
+.bullets li:nth-child(4){ animation-delay:.29s; }
+@keyframes bulletIn{ to{ opacity:1; transform:none; } }
+.chk{
+  flex:none; width:20px; height:20px; border-radius:50%;
+  background:var(--gold); color:#3a2c00; font-weight:800; font-size:12px;
+  display:grid; place-items:center;
+}
+
+.social{ display:flex; align-items:center; gap:10px; font-size:12.5px; color:var(--muted); }
+.avatars{ display:flex; }
+.avatars span{
+  width:28px; height:28px; border-radius:50%;
+  background:linear-gradient(135deg,var(--navy),var(--navy-dark)); color:#fff;
+  display:grid; place-items:center; font-size:11px; font-weight:700;
+  margin-left:-8px; border:2px solid #fff;
+}
+.avatars span:first-child{ margin-left:0; }
+.social b{ color:var(--ink); }
+
+.videos{ display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
+.vcard{ cursor:pointer; }
+.vwrap{
+  position:relative; border-radius:13px; overflow:hidden;
+  aspect-ratio:1/1; background:#0a1638; box-shadow:var(--shadow);
+  border:1px solid rgba(212,175,55,.35);
+}
+.vwrap video{ width:100%; height:100%; object-fit:cover; display:block; }
+.vwrap .mute{
+  position:absolute; right:5px; bottom:5px;
+  background:rgba(7,22,66,.65); color:#fff; font-size:11px;
+  width:22px; height:22px; border-radius:50%; display:grid; place-items:center;
+  backdrop-filter:blur(2px);
+}
+.vwrap .mute{
+  background:rgba(7,22,66,.72);
+}
+.vcap{ font-size:10.5px; color:var(--muted); text-align:center; margin-top:5px; line-height:1.2; }
+
+/* ===== Модалка перегляду відео ===== */
+.vmodal{
+  position:fixed; inset:0; z-index:100;
+  display:none; align-items:center; justify-content:center;
+  padding:16px; background:rgba(7,22,66,.94);
+  backdrop-filter:blur(3px);
+}
+.vmodal.open{ display:flex; }
+.vmodal .vbox{ position:relative; width:100%; max-width:480px; }
+.vmodal video{
+  width:100%; max-height:82vh; border-radius:14px;
+  background:#000; display:block; box-shadow:0 20px 60px rgba(0,0,0,.5);
+}
+.vmodal .close{
+  position:absolute; top:-46px; right:0;
+  width:38px; height:38px; border-radius:50%; border:0; cursor:pointer;
+  background:rgba(255,255,255,.15); color:#fff; font-size:20px; line-height:1;
+  display:grid; place-items:center; backdrop-filter:blur(2px);
+}
+
+.gift{
+  display:flex; gap:11px; align-items:center;
+  background:linear-gradient(135deg,var(--gold-soft),#fff);
+  border:1px solid var(--gold); border-radius:14px;
+  padding:11px 12px;
+}
+.gift .emoji{
+  font-size:28px; display:inline-block;
+  transform-origin:50% 60%;
+  animation:sway 2.4s ease-in-out infinite;
+  will-change:transform;
+}
+.gift .g-text b{ font-size:13.5px; }
+.gift .g-text div{ font-size:12px; color:var(--muted); margin-top:2px; line-height:1.3; }
+@keyframes sway{
+  0%,100%{ transform:translateX(-4px) rotate(-9deg); }
+  50%{ transform:translateX(4px) rotate(9deg); }
+}
+
+/* ===== CTA ===== */
+.cta-wrap{ padding-top:11px; }
+.btn{
+  display:block; width:100%; border:0; cursor:pointer;
+  background:linear-gradient(135deg,var(--navy),var(--navy-dark));
+  color:#fff; font-size:17px; font-weight:700; text-align:center; text-decoration:none;
+  padding:16px 18px; border-radius:15px;
+  box-shadow:0 10px 26px rgba(14,122,84,.32);
+  position:relative; overflow:hidden;
+}
+/* легкий "промінь" по кнопці */
+.btn::after{
+  content:""; position:absolute; top:0; left:-60%; width:45%; height:100%;
+  background:linear-gradient(100deg,transparent,rgba(255,255,255,.35),transparent);
+  transform:skewX(-18deg); animation:sheen 3.6s ease-in-out infinite;
+}
+@keyframes sheen{ 0%,60%{ left:-60%; } 100%{ left:130%; } }
+.btn:active{ transform:translateY(1px); }
+.btn.gold{
+  background:linear-gradient(135deg,var(--gold),#b8901f); color:#2e2200;
+  box-shadow:0 10px 26px rgba(212,175,55,.42);
+}
+.btn.tg{ background:linear-gradient(135deg,#2aa7e0,#1c8ac4); box-shadow:0 10px 26px rgba(28,138,196,.35); }
+.btn.pulse{ animation:pulse 2.2s ease-in-out infinite; }
+@keyframes pulse{
+  0%,100%{ transform:scale(1); }
+  50%{ transform:scale(1.02); }
+}
+.under-cta{ text-align:center; font-size:12px; color:var(--muted); margin-top:8px; }
+
+/* ===== Топбар питань ===== */
+.topbar{ display:flex; align-items:center; gap:12px; margin-bottom:16px; }
+.back{
+  flex:none; width:38px; height:38px; border-radius:11px;
+  border:1px solid var(--line); background:#fff; color:var(--navy);
+  font-size:22px; line-height:1; cursor:pointer;
+}
+.progress{ flex:1; }
+.progress .lbl{ font-size:12.5px; color:var(--muted); margin-bottom:6px; }
+.bar{ height:8px; background:var(--navy-soft); border-radius:99px; overflow:hidden; }
+.bar i{ display:block; height:100%; background:linear-gradient(90deg,var(--navy),var(--gold)); border-radius:99px; transition:width .3s ease; }
+
+.q-body{ flex:1; }
+h2{ font-size:21px; line-height:1.3; margin:0 0 16px; letter-spacing:-.01em; }
+
+.options{ list-style:none; margin:0; padding:0; display:grid; gap:11px; }
+.opt{
+  display:flex; align-items:center; gap:12px;
+  background:#fff; border:1.5px solid var(--line); border-radius:14px;
+  padding:15px 14px; font-size:15px; line-height:1.35; cursor:pointer;
+  transition:border-color .15s, background .15s, transform .1s;
+}
+.opt:active{ transform:scale(.99); }
+@media (hover:hover){
+  .opt:hover{ border-color:var(--navy); transform:translateY(-1px); box-shadow:0 6px 18px rgba(14,122,84,.10); }
+}
+.opt .ic{ font-size:22px; flex:none; transition:transform .15s; }
+.opt.selected{ border-color:var(--navy); background:var(--navy-soft); }
+.opt.selected .ic{ transform:scale(1.15); }
+
+/* ===== Форма ===== */
+.field{ margin-bottom:14px; }
+.field label{ display:block; font-size:13.5px; color:var(--muted); margin-bottom:6px; font-weight:600; }
+.input{
+  width:100%; border:1.5px solid var(--line); border-radius:13px;
+  padding:14px 14px; font-size:16px; color:var(--ink); background:#fff;
+  outline:none; transition:border-color .15s;
+}
+.input:focus{ border-color:var(--navy); }
+.phone-row{ display:flex; gap:8px; }
+.cc{ position:relative; }
+.cc-btn{
+  display:flex; align-items:center; gap:5px;
+  height:100%; padding:0 11px; border:1.5px solid var(--line); border-radius:13px;
+  background:#fff; cursor:pointer; font-size:15px; white-space:nowrap;
+}
+.cc-btn .arr{ font-size:9px; color:var(--muted); }
+.cc-list{
+  display:none; position:absolute; z-index:20; top:calc(100% + 6px); left:0;
+  width:260px; max-height:280px; overflow:hidden;
+  background:#fff; border:1px solid var(--line); border-radius:14px;
+  box-shadow:0 16px 40px rgba(13,26,58,.18);
+}
+.cc-list.open{ display:block; }
+.cc-list input{
+  width:100%; border:0; border-bottom:1px solid var(--line);
+  padding:12px 14px; font-size:15px; outline:none;
+}
+#ccItems{ max-height:232px; overflow-y:auto; }
+.cc-item{ display:flex; align-items:center; gap:9px; padding:11px 14px; cursor:pointer; font-size:14.5px; }
+.cc-item:hover{ background:var(--navy-soft); }
+.cc-item .dial{ margin-left:auto; color:var(--muted); }
+
+.consent{ display:flex; gap:9px; align-items:flex-start; font-size:12.5px; color:var(--muted); line-height:1.4; margin:4px 0 16px; }
+.consent input{ margin-top:2px; width:17px; height:17px; flex:none; accent-color:var(--navy); }
+.err{ display:none; color:#d33; font-size:12.5px; margin-top:6px; }
+
+/* ===== Центрові екрани (відмова/подяка) ===== */
+.screen.center h2{ margin-top:8px; }
+.screen.center p{ color:var(--muted); font-size:15.5px; line-height:1.55; max-width:420px; }
+.badge,.oops{ font-size:64px; margin:14px 0 4px; }
+.mt-auto{ margin-top:auto; padding-top:16px; }
+.screen.center{ overflow-y:auto; }
+[data-screen="thankyou"] .mt-auto{ margin-top:22px; margin-bottom:16px; padding-top:0; }
+.link-back{
+  display:inline-block; margin-top:14px; color:var(--navy);
+  font-size:14px; font-weight:600; text-decoration:none; cursor:pointer;
+}
+
+/* ===== Адаптація під невисокі екрани (щоб усе вміщалось без скролу) ===== */
+@media (max-height: 750px){
+  h1{ font-size:22px; }
+  .lead{ font-size:13px; line-height:1.35; }
+  .intro-flow{ gap:8px; }
+  .bullets{ gap:6px; }
+  .bullets li{ font-size:12.5px; padding:8px 10px; }
+  .vwrap{ aspect-ratio:auto; height:88px; }
+  .vcap{ font-size:10px; margin-top:4px; }
+  .gift{ padding:9px 11px; }
+  .gift .emoji{ font-size:25px; }
+  .gift .g-text b{ font-size:12.5px; }
+  .gift .g-text div{ font-size:11px; }
+  .social{ font-size:11.5px; }
+  .cta-wrap{ padding-top:9px; }
+  .btn{ font-size:16px; padding:14px 18px; }
+}
+@media (max-height: 660px){
+  h1{ font-size:20px; }
+  .lead{ font-size:12.5px; line-height:1.3; }
+  .bullets li{ font-size:12px; padding:7px 9px; line-height:1.25; }
+  .vwrap{ height:76px; }
+  .gift .emoji{ font-size:22px; }
+  .social .avatars span{ width:24px; height:24px; }
+}
+
+@media (prefers-reduced-motion: reduce){
+  .gift .emoji, .btn.pulse, .btn::after, .bullets li{ animation:none; opacity:1; transform:none; }
+}
+</style>
+</head>
+<body>
+<div id="app">
+
+  <!-- ==================== ЕКРАН 1 · ІНТРО ==================== -->
+  <section class="screen active" data-screen="intro">
+    <div class="intro-flow">
+      <h1>Нерухомість уже <span class="gold">не тільки для багатих</span></h1>
+      <p class="lead">Пройдіть коротку анкету (3 питання) — і відкрийте безкоштовний доступ до практикуму, де простими словами показано, як працює токенізована нерухомість і як зайти в неї з комфортною сумою.</p>
+
+      <ul class="bullets">
+        <li><span class="chk">✓</span> Старт із невеликої, комфортної для вас суми</li>
+        <li><span class="chk">✓</span> Пояснюємо по-людськи — без складних термінів і «води»</li>
+        <li><span class="chk">✓</span> Реальні активи: курортна нерухомість, модульні будинки, оливкові сади</li>
+        <li><span class="chk">✓</span> Безкоштовне навчання + особистий супровід на старті</li>
+      </ul>
+
+      <div class="social">
+        <div class="avatars"><span>І</span><span>Т</span><span>Ю</span><span>+</span></div>
+        <div>Уже <b>1500+ людей</b> розібралися в темі разом із нами</div>
+      </div>
+
+      <div class="videos">
+        <div class="vcard">
+          <div class="vwrap"><video src="videos/video1.mp4#t=0.1" muted loop autoplay playsinline preload="auto"></video><span class="mute">▶</span></div>
+          <div class="vcap">Ія</div>
+        </div>
+        <div class="vcard">
+          <div class="vwrap"><video src="videos/video2.mp4#t=0.1" muted loop autoplay playsinline preload="auto"></video><span class="mute">▶</span></div>
+          <div class="vcap">Тетяна</div>
+        </div>
+        <div class="vcard">
+          <div class="vwrap"><video src="videos/video3.mp4#t=0.1" muted loop autoplay playsinline preload="auto"></video><span class="mute">▶</span></div>
+          <div class="vcap">Юрій</div>
+        </div>
+      </div>
+
+      <div class="gift">
+        <div class="emoji">🎁</div>
+        <div class="g-text">
+          <b>Подарунок за проходження</b>
+          <div>Безкоштовний доступ до практикуму від спільноти гармонійних інвесторів</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cta-wrap">
+      <button class="btn pulse" data-go="q1">Пройти анкету →</button>
+      <div class="under-cta">Займе 40 секунд · безкоштовно</div>
+    </div>
+  </section>
+
+  <!-- ==================== ЕКРАН 2 · ПИТАННЯ 1 ==================== -->
+  <section class="screen" data-screen="q1">
+    <div class="topbar">
+      <button class="back" data-back aria-label="Назад">‹</button>
+      <div class="progress">
+        <div class="lbl">Питання 1 з 3</div>
+        <div class="bar"><i style="width:33%"></i></div>
+      </div>
+    </div>
+    <div class="q-body scroll">
+      <h2>Що з цього відгукується вам найбільше?</h2>
+      <ul class="options" data-q="q1" data-next="q2">
+        <li class="opt" data-val="Дольова участь у прибутковій нерухомості"><span class="ic">🏢</span> Дольова участь у прибутковій нерухомості</li>
+        <li class="opt" data-val="Інвестиції у модульні будинки"><span class="ic">🏠</span> Інвестиції у модульні будинки</li>
+        <li class="opt" data-val="Аграрний напрямок / оливкові дерева"><span class="ic">🌿</span> Аграрний напрямок / оливкові дерева</li>
+        <li class="opt" data-val="Хочу розібратись, як це працює"><span class="ic">🔍</span> Хочу розібратись, як це працює</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ==================== ЕКРАН 3 · ПИТАННЯ 2 ==================== -->
+  <section class="screen" data-screen="q2">
+    <div class="topbar">
+      <button class="back" data-back aria-label="Назад">‹</button>
+      <div class="progress">
+        <div class="lbl">Питання 2 з 3</div>
+        <div class="bar"><i style="width:66%"></i></div>
+      </div>
+    </div>
+    <div class="q-body scroll">
+      <h2>Який у вас досвід в інвестиціях на сьогодні?</h2>
+      <ul class="options" data-q="q2" data-next="q3">
+        <li class="opt" data-val="Вже інвестую, шукаю нові напрямки"><span class="ic">🚀</span> Уже інвестую — шукаю нові напрямки</li>
+        <li class="opt" data-val="Пробував(ла), хочу зрозуміти нерухомість"><span class="ic">🌍</span> Пробував(ла) інше, але хочу зрозуміти нерухомість</li>
+        <li class="opt" data-val="Досвіду нема, але дуже цікаво почати"><span class="ic">🔍</span> Досвіду нема, але дуже цікаво почати</li>
+        <li class="opt" data-val="Тільки придивляюся до теми"><span class="ic">🌱</span> Поки тільки придивляюся до теми</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ==================== ЕКРАН 4 · ПИТАННЯ 3 (ФІЛЬТР ПРО ГРОШІ) ==================== -->
+  <section class="screen" data-screen="q3">
+    <div class="topbar">
+      <button class="back" data-back aria-label="Назад">‹</button>
+      <div class="progress">
+        <div class="lbl">Питання 3 з 3</div>
+        <div class="bar"><i style="width:100%"></i></div>
+      </div>
+    </div>
+    <div class="q-body scroll">
+      <h2>Будь-який старт у нерухомості потребує першого кроку — хай навіть маленького. Наскільки ви готові підійти до цього серйозно?</h2>
+      <ul class="options" data-q="q3">
+        <li class="opt" data-val="Хочу в усьому розібратися і серйозно вникати" data-next="form"><span class="ic">🟢</span> Так, я хочу в усьому розібратися і серйозно вникати в тему</li>
+        <li class="opt" data-val="Готовий відкрити для себе тему і почати з малого" data-next="form"><span class="ic">🟢</span> Готовий(а) відкрити для себе цю тему та почати з невеликого кроку</li>
+        <li class="opt" data-val="Не готовий робити жодних кроків" data-next="reject"><span class="ic">⚪️</span> Ні, не готовий(а) робити взагалі жодних кроків</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ==================== ФОРМА КОНТАКТУ ==================== -->
+  <section class="screen" data-screen="form">
+    <div class="topbar">
+      <button class="back" data-back aria-label="Назад">‹</button>
+      <div class="progress">
+        <div class="lbl">Останній крок</div>
+        <div class="bar"><i style="width:100%"></i></div>
+      </div>
+    </div>
+    <div class="q-body scroll">
+      <h2>Куди надіслати доступ до практикуму?</h2>
+      <p class="lead">Залиште контакт — я особисто напишу вам у месенджер, надішлю доступ до практикуму і відповім на ваші питання.</p>
+
+      <form id="leadForm" novalidate>
+        <div class="field">
+          <label for="name">Ваше ім'я</label>
+          <input class="input" id="name" name="name" type="text" placeholder="Напр., Олег" autocomplete="given-name" />
+          <div class="err" id="err-name">Введіть, будь ласка, ім'я</div>
+        </div>
+
+        <div class="field">
+          <label for="phone">Телефон / WhatsApp</label>
+          <div class="phone-row">
+            <div class="cc">
+              <button type="button" class="cc-btn" id="ccBtn"><span class="flag" id="ccFlag">🇺🇦</span><span id="ccDial">+380</span><span class="arr">▼</span></button>
+              <div class="cc-list" id="ccList">
+                <input type="text" id="ccSearch" placeholder="Пошук країни…" />
+                <div id="ccItems"></div>
+              </div>
+            </div>
+            <input class="input" id="phone" name="phone" type="tel" inputmode="tel" placeholder="00 000 00 00" autocomplete="tel" style="flex:1" />
+          </div>
+          <div class="err" id="err-phone">Введіть, будь ласка, номер телефону</div>
+        </div>
+
+        <label class="consent">
+          <input type="checkbox" id="consent" checked />
+          <span>Погоджуюся на обробку контактних даних для зв'язку щодо консультації. Спаму не буде.</span>
+        </label>
+
+        <button type="submit" class="btn" id="submitBtn">Отримати доступ до практикуму →</button>
+        <div class="under-cta">🔒 Ваші дані бачу тільки я. Нікому не передаємо.</div>
+      </form>
+    </div>
+  </section>
+
+  <!-- ==================== ЕКРАН ВІДМОВИ (фільтр про гроші) ==================== -->
+  <section class="screen center" data-screen="reject">
+    <div class="oops">🙈</div>
+    <h2>Схоже, зараз ми не по дорозі</h2>
+    <p>Як показує практика, <b>без жодних кроків результату не буває</b>. Будь-яка тема потребує старту, хай навіть найменшого.</p>
+    <p style="margin-top:-6px">Коли будете готові відкрити для себе цю тему — повертайтеся. Я з радістю все покажу простими словами й допоможу почати з комфортного для вас кроку.</p>
+    <a class="link-back" data-go="intro">← Повернутися на початок</a>
+  </section>
+
+  <!-- ==================== ЕКРАН ПОДЯКИ ==================== -->
+  <section class="screen center" data-screen="thankyou">
+    <div class="badge">✅</div>
+    <h2>Заявку прийнято!</h2>
+    <p>Дякую за довіру. Я особисто зв'яжуся з вами найближчим часом — надішлю <b>доступ до практикуму від спільноти гармонійних інвесторів</b> і відповім на всі ваші питання.</p>
+    <p style="margin-top:-6px"><b>Щоб пришвидшити — напишіть мені прямо зараз:</b></p>
+    <div class="mt-auto" style="width:100%">
+      <a class="btn tg" href="https://t.me/Aquarius9_9?text=Вітаю!%20Щойно%20залишив(ла)%20заявку%20на%20відеоуроки%20про%20нерухомість" target="_blank" rel="noopener">✈️ Написати в Telegram</a>
+      <div class="under-cta">Відповідаю зазвичай протягом кількох годин</div>
+    </div>
+  </section>
+
+  <!-- ==================== МОДАЛКА ПЕРЕГЛЯДУ ВІДЕО ==================== -->
+  <div class="vmodal" id="vmodal">
+    <div class="vbox">
+      <button class="close" id="vmClose" aria-label="Закрити">✕</button>
+      <video id="vmVideo" controls playsinline preload="auto"></video>
+    </div>
+  </div>
+
+</div>
+
+<script>
+/* ============ Коректна висота (Safari / Chrome / Instagram in-app) ============ */
+function setAppHeight(){
+  document.documentElement.style.setProperty('--app-h', window.innerHeight + 'px');
+}
+setAppHeight();
+window.addEventListener('resize', setAppHeight);
+window.addEventListener('orientationchange', ()=>setTimeout(setAppHeight,120));
+
+/* ============ Стан квіза ============ */
+const state = { q1:'', q2:'', q3:'' };
+const SCREENS = ['intro','q1','q2','q3','form','reject','thankyou'];
+
+function showScreen(name){
+  if(!SCREENS.includes(name)) name = 'intro';
+  document.querySelectorAll('.screen').forEach(s=>{
+    s.classList.toggle('active', s.dataset.screen===name);
+  });
+  const active = document.querySelector('.screen.active .scroll');
+  if(active) active.scrollTop = 0;
+}
+
+/* ============ Роутинг через hash (працює системна кнопка «Назад») ============ */
+function go(name){
+  if(location.hash.replace('#','') === name){ showScreen(name); }
+  else { location.hash = name; }   // додає запис в історію → back працює
+}
+function currentFromHash(){
+  return location.hash.replace('#','') || 'intro';
+}
+window.addEventListener('hashchange', ()=> showScreen(currentFromHash()));
+
+/* Кнопка «Назад» у шапці = системний back */
+document.querySelectorAll('[data-back]').forEach(b=>{
+  b.addEventListener('click', ()=> history.back());
+});
+
+/* CTA / посилання-переходи */
+document.querySelectorAll('[data-go]').forEach(b=>{
+  b.addEventListener('click', ()=> go(b.dataset.go));
+});
+
+/* ============ Вибір відповіді → авто-перехід ============ */
+document.querySelectorAll('.options').forEach(list=>{
+  list.querySelectorAll('.opt').forEach(opt=>{
+    opt.addEventListener('click', ()=>{
+      const q = list.dataset.q;
+      state[q] = opt.dataset.val;
+      list.querySelectorAll('.opt').forEach(o=>o.classList.remove('selected'));
+      opt.classList.add('selected');
+      const next = opt.dataset.next || list.dataset.next;
+      setTimeout(()=> go(next), 180);   // невелика пауза для фідбеку
+    });
+  });
+});
+
+/* ============ Селектор коду країни (легкий, без бібліотек) ============ */
+const COUNTRIES = [
+  {c:'UA',n:'Україна',d:'+380',f:'🇺🇦'},
+  {c:'PL',n:'Польща',d:'+48',f:'🇵🇱'},
+  {c:'DE',n:'Німеччина',d:'+49',f:'🇩🇪'},
+  {c:'CZ',n:'Чехія',d:'+420',f:'🇨🇿'},
+  {c:'IT',n:'Італія',d:'+39',f:'🇮🇹'},
+  {c:'ES',n:'Іспанія',d:'+34',f:'🇪🇸'},
+  {c:'PT',n:'Португалія',d:'+351',f:'🇵🇹'},
+  {c:'FR',n:'Франція',d:'+33',f:'🇫🇷'},
+  {c:'GB',n:'Велика Британія',d:'+44',f:'🇬🇧'},
+  {c:'NL',n:'Нідерланди',d:'+31',f:'🇳🇱'},
+  {c:'BE',n:'Бельгія',d:'+32',f:'🇧🇪'},
+  {c:'AT',n:'Австрія',d:'+43',f:'🇦🇹'},
+  {c:'CH',n:'Швейцарія',d:'+41',f:'🇨🇭'},
+  {c:'IE',n:'Ірландія',d:'+353',f:'🇮🇪'},
+  {c:'SE',n:'Швеція',d:'+46',f:'🇸🇪'},
+  {c:'NO',n:'Норвегія',d:'+47',f:'🇳🇴'},
+  {c:'DK',n:'Данія',d:'+45',f:'🇩🇰'},
+  {c:'FI',n:'Фінляндія',d:'+358',f:'🇫🇮'},
+  {c:'SK',n:'Словаччина',d:'+421',f:'🇸🇰'},
+  {c:'HU',n:'Угорщина',d:'+36',f:'🇭🇺'},
+  {c:'RO',n:'Румунія',d:'+40',f:'🇷🇴'},
+  {c:'BG',n:'Болгарія',d:'+359',f:'🇧🇬'},
+  {c:'GR',n:'Греція',d:'+30',f:'🇬🇷'},
+  {c:'LT',n:'Литва',d:'+370',f:'🇱🇹'},
+  {c:'LV',n:'Латвія',d:'+371',f:'🇱🇻'},
+  {c:'EE',n:'Естонія',d:'+372',f:'🇪🇪'},
+  {c:'US',n:'США / Канада',d:'+1',f:'🇺🇸'},
+  {c:'IL',n:'Ізраїль',d:'+972',f:'🇮🇱'},
+  {c:'MD',n:'Молдова',d:'+373',f:'🇲🇩'}
+];
+let selectedCountry = COUNTRIES[0];
+
+const ccBtn=document.getElementById('ccBtn');
+const ccList=document.getElementById('ccList');
+const ccItems=document.getElementById('ccItems');
+const ccSearch=document.getElementById('ccSearch');
+const ccFlag=document.getElementById('ccFlag');
+const ccDial=document.getElementById('ccDial');
+
+function renderCountries(filter=''){
+  const f=filter.trim().toLowerCase();
+  ccItems.innerHTML='';
+  COUNTRIES.filter(x=> !f || x.n.toLowerCase().includes(f) || x.d.includes(f) || x.c.toLowerCase().includes(f))
+   .forEach(x=>{
+    const el=document.createElement('div');
+    el.className='cc-item';
+    el.innerHTML=`<span style="font-size:19px">${x.f}</span><span>${x.n}</span><span class="dial">${x.d}</span>`;
+    el.addEventListener('click',()=>{ setCountry(x); closeCC(); });
+    ccItems.appendChild(el);
+  });
+}
+function setCountry(x){
+  selectedCountry=x;
+  ccFlag.textContent=x.f;
+  ccDial.textContent=x.d;
+}
+function openCC(){ ccList.classList.add('open'); ccSearch.value=''; renderCountries(); setTimeout(()=>ccSearch.focus(),50); }
+function closeCC(){ ccList.classList.remove('open'); }
+ccBtn.addEventListener('click',()=> ccList.classList.contains('open')?closeCC():openCC());
+ccSearch.addEventListener('input',()=> renderCountries(ccSearch.value));
+document.addEventListener('click',(e)=>{ if(!e.target.closest('.cc')) closeCC(); });
+renderCountries();
+
+/* Авто-визначення країни по геолокації (IP), легкий запит з таймаутом */
+(function autoCountry(){
+  const ctrl = new AbortController();
+  const t = setTimeout(()=>ctrl.abort(), 2500);
+  fetch('https://ipapi.co/json/', {signal:ctrl.signal})
+    .then(r=>r.ok?r.json():null)
+    .then(d=>{
+      clearTimeout(t);
+      if(d && d.country_code){
+        const m = COUNTRIES.find(x=>x.c===d.country_code);
+        if(m) setCountry(m);
+      }
+    })
+    .catch(()=>{ /* тихо лишаємо Україну за замовчуванням */ });
+})();
+
+/* ============ Відправка форми → Lead + Telegram ============ */
+const form=document.getElementById('leadForm');
+const submitBtn=document.getElementById('submitBtn');
+
+form.addEventListener('submit', async (e)=>{
+  e.preventDefault();
+  const name=document.getElementById('name').value.trim();
+  const phoneRaw=document.getElementById('phone').value.trim();
+  const errN=document.getElementById('err-name');
+  const errP=document.getElementById('err-phone');
+  errN.style.display='none'; errP.style.display='none';
+
+  let ok=true;
+  if(name.length<2){ errN.style.display='block'; ok=false; }
+  if(phoneRaw.replace(/\D/g,'').length<6){ errP.style.display='block'; ok=false; }
+  if(!ok) return;
+
+  const phone = selectedCountry.d + ' ' + phoneRaw;
+  const payload = {
+    name,
+    phone,
+    country: selectedCountry.n,
+    q1: state.q1 || '—',
+    q2: state.q2 || '—',
+    q3: state.q3 || '—',
+    page: location.href
+  };
+
+  submitBtn.disabled=true;
+  submitBtn.textContent='Відправляємо…';
+
+  // Meta Pixel: подія Lead саме на відправку форми
+  if(typeof fbq==='function'){ fbq('track','Lead'); }
+
+  try{
+    await fetch('/api/lead', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify(payload)
+    });
+  }catch(err){ /* навіть якщо мережа підвела — ведемо на подяку */ }
+
+  go('thankyou');
+});
+
+/* ============ Прев'ю відео: авто-відтворення без звуку; клік → модалка ============ */
+const vmodal = document.getElementById('vmodal');
+const vmVideo = document.getElementById('vmVideo');
+const vmClose = document.getElementById('vmClose');
+
+function openVideo(src){
+  // чистий src без #t=... щоб можна було перемотувати з початку
+  vmVideo.src = src.split('#')[0];
+  vmVideo.currentTime = 0;
+  vmVideo.muted = false;
+  vmodal.classList.add('open');
+  vmVideo.play().catch(()=>{});
+}
+function closeVideo(){
+  vmVideo.pause();
+  vmodal.classList.remove('open');
+  vmVideo.removeAttribute('src');
+  vmVideo.load();
+}
+vmClose.addEventListener('click', closeVideo);
+vmodal.addEventListener('click', (e)=>{ if(e.target===vmodal) closeVideo(); });
+window.addEventListener('hashchange', ()=>{ if(vmodal.classList.contains('open')) closeVideo(); });
+
+document.querySelectorAll('.vcard').forEach(card=>{
+  const v = card.querySelector('video');
+  const play = ()=> v.play().catch(()=>{});
+  play();
+  document.addEventListener('touchstart', play, {once:true});
+  document.addEventListener('click', play, {once:true});
+
+  card.addEventListener('click', (e)=>{
+    e.preventDefault();
+    openVideo(v.currentSrc || v.getAttribute('src') || v.src);
+  });
+});
+
+/* ============ Ініціалізація ============ */
+showScreen(currentFromHash());
+</script>
+</body>
+</html>

@@ -1,0 +1,10 @@
+{
+  "name": "tokenized-realty-quiz",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Квіз-лендінг: інвестиції в токенізовану нерухомість — збір заявок у Telegram",
+  "scripts": {
+    "dev": "vercel dev",
+    "start": "vercel dev"
+  }
+}
