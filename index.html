@@ -7,7 +7,7 @@
 <meta name="description" content="Пройдіть коротку анкету (3 питання) — і отримайте безкоштовний набір відеоуроків, який простими словами пояснює, як влаштована токенізована нерухомість." />
 
 <!-- ============ META PIXEL ============ -->
-<!-- 🔴 ВСТАВТЕ СЮДИ ВАШ PIXEL ID замість YOUR_PIXEL_ID (у двох місцях) -->
+<!-- Meta Pixel ID: 2065001050789881 -->
 <script>
 !function(f,b,e,v,n,t,s)
 {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
@@ -17,11 +17,11 @@ n.queue=[];t=b.createElement(e);t.async=!0;
 t.src=v;s=b.getElementsByTagName(e)[0];
 s.parentNode.insertBefore(t,s)}(window, document,'script',
 'https://connect.facebook.net/en_US/fbevents.js');
-fbq('init', 'YOUR_PIXEL_ID');
+fbq('init', '2065001050789881');
 fbq('track', 'PageView');
 </script>
 <noscript><img height="1" width="1" style="display:none"
-src="https://www.facebook.com/tr?id=YOUR_PIXEL_ID&ev=PageView&noscript=1"/></noscript>
+src="https://www.facebook.com/tr?id=2065001050789881&ev=PageView&noscript=1"/></noscript>
 <!-- ========== END META PIXEL ========== -->
 
 <style>
@@ -551,7 +551,13 @@ document.querySelectorAll('[data-back]').forEach(b=>{
 
 /* CTA / посилання-переходи */
 document.querySelectorAll('[data-go]').forEach(b=>{
-  b.addEventListener('click', ()=> go(b.dataset.go));
+  b.addEventListener('click', ()=>{
+    // Meta Pixel: старт квіза при переході на перше питання
+    if(b.dataset.go==='q1' && typeof fbq==='function'){
+      fbq('trackCustom', 'QuizStart');
+    }
+    go(b.dataset.go);
+  });
 });
 
 /* ============ Вибір відповіді → авто-перехід ============ */
@@ -563,6 +569,12 @@ document.querySelectorAll('.options').forEach(list=>{
       list.querySelectorAll('.opt').forEach(o=>o.classList.remove('selected'));
       opt.classList.add('selected');
       const next = opt.dataset.next || list.dataset.next;
+      // Meta Pixel: окрема подія-follow-up на кожне питання
+      if(typeof fbq==='function'){
+        fbq('trackCustom', 'Quiz' + q.toUpperCase(), { question:q, answer:opt.dataset.val });
+        // подія переходу до контактної форми (кваліфікований крок)
+        if(next==='form'){ fbq('track', 'InitiateCheckout'); }
+      }
       setTimeout(()=> go(next), 180);   // невелика пауза для фідбеку
     });
   });
