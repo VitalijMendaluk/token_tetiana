@@ -1,9 +1,18 @@
-// Vercel Serverless Function — приймає заявку і надсилає її в Telegram.
-// Токен і chat_id читаються з Environment Variables (додайте їх у Vercel і зробіть Redeploy).
+// Vercel Serverless Function — приймає заявку, шле в Telegram і дублює подію Lead у Meta (Conversions API).
+// Env-змінні (Vercel → Settings → Environment Variables, потім Redeploy):
+//   TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID  — для заявок у Telegram
+//   META_PIXEL_ID       = 2065001050789881 (набір даних)
+//   META_CAPI_TOKEN     = токен доступу з Events Manager → Налаштування → Conversions API
+//   META_TEST_EVENT_CODE (необов'язково) — код із «Тестування подій» для перевірки
+
+import crypto from 'crypto';
 
 export default async function handler(req, res) {
   const TOKEN = process.env.TELEGRAM_BOT_TOKEN;
   const CHAT_ID = process.env.TELEGRAM_CHAT_ID;
+  const PIXEL_ID = process.env.META_PIXEL_ID;
+  const CAPI_TOKEN = process.env.META_CAPI_TOKEN;
+  const TEST_CODE = process.env.META_TEST_EVENT_CODE;
 
   // Health-check: відкрий /api/lead у браузері (GET) — покаже, чи Vercel бачить змінні.
   if (req.method === 'GET') {
@@ -11,7 +20,10 @@ export default async function handler(req, res) {
       ok: true,
       env: {
         TELEGRAM_BOT_TOKEN: TOKEN ? 'set ✅' : 'MISSING ❌',
-        TELEGRAM_CHAT_ID: CHAT_ID ? ('set ✅ (' + CHAT_ID + ')') : 'MISSING ❌'
+        TELEGRAM_CHAT_ID: CHAT_ID ? ('set ✅ (' + CHAT_ID + ')') : 'MISSING ❌',
+        META_PIXEL_ID: PIXEL_ID ? ('set ✅ (' + PIXEL_ID + ')') : 'MISSING ❌',
+        META_CAPI_TOKEN: CAPI_TOKEN ? 'set ✅' : 'MISSING ❌',
+        META_TEST_EVENT_CODE: TEST_CODE ? ('set ✅ (' + TEST_CODE + ')') : 'not set'
       },
       hint: 'Якщо MISSING — додайте змінні у Vercel → Settings → Environment Variables і зробіть Redeploy.'
     });
@@ -41,7 +53,10 @@ export default async function handler(req, res) {
       try { body = JSON.parse(raw || '{}'); } catch { body = {}; }
     }
 
-    const { name = '', phone = '', country = '', q1 = '—', q2 = '—', q3 = '—', page = '' } = body || {};
+    const {
+      name = '', phone = '', country = '', q1 = '—', q2 = '—', q3 = '—', page = '',
+      eventId = '', fbp = '', fbc = ''
+    } = body || {};
 
     const text =
       '🏢 <b>Нова заявка · Квіз «Нерухомість»</b>\n\n' +
@@ -70,11 +85,70 @@ export default async function handler(req, res) {
       return res.status(502).json({ ok: false, error: 'Telegram error', detail: data });
     }
 
-    return res.status(200).json({ ok: true });
+    // ===== Meta Conversions API (не блокує заявку у разі помилки) =====
+    let capi = 'skipped';
+    if (PIXEL_ID && CAPI_TOKEN) {
+      try {
+        capi = await sendCapiLead({
+          PIXEL_ID, CAPI_TOKEN, TEST_CODE,
+          name, phone, page, eventId, fbp, fbc, req
+        });
+      } catch (e) {
+        capi = 'error';
+        console.error('CAPI error:', e);
+      }
+    }
+
+    return res.status(200).json({ ok: true, capi });
   } catch (err) {
     console.error('lead.js error:', err);
     return res.status(500).json({ ok: false, error: String((err && err.message) || err) });
   }
+}
+
+async function sendCapiLead({ PIXEL_ID, CAPI_TOKEN, TEST_CODE, name, phone, page, eventId, fbp, fbc, req }) {
+  const ipRaw = (req.headers['x-forwarded-for'] || '').split(',')[0].trim();
+  const ua = req.headers['user-agent'] || '';
+
+  const user_data = {
+    client_user_agent: ua
+  };
+  if (ipRaw) user_data.client_ip_address = ipRaw;
+  const phoneNorm = String(phone).replace(/[^\d]/g, '');
+  if (phoneNorm) user_data.ph = [sha256(phoneNorm)];
+  const nameNorm = String(name).trim().toLowerCase();
+  if (nameNorm) user_data.fn = [sha256(nameNorm)];
+  if (fbp) user_data.fbp = fbp;
+  if (fbc) user_data.fbc = fbc;
+
+  const payload = {
+    data: [{
+      event_name: 'Lead',
+      event_time: Math.floor(Date.now() / 1000),
+      event_id: eventId || undefined,           // дедуплікація з браузерним pixel Lead
+      action_source: 'website',
+      event_source_url: page || undefined,
+      user_data
+    }]
+  };
+  if (TEST_CODE) payload.test_event_code = TEST_CODE;
+
+  const url = 'https://graph.facebook.com/v21.0/' + PIXEL_ID + '/events?access_token=' + encodeURIComponent(CAPI_TOKEN);
+  const r = await fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  });
+  const j = await r.json();
+  if (!r.ok || j.error) {
+    console.error('CAPI response:', j);
+    return 'error';
+  }
+  return 'sent';
+}
+
+function sha256(s) {
+  return crypto.createHash('sha256').update(String(s)).digest('hex');
 }
 
 function esc(s) {
