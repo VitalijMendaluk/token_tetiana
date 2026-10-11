@@ -381,13 +381,13 @@ h2{ font-size:21px; line-height:1.3; margin:0 0 16px; letter-spacing:-.01em; }
     <div class="topbar">
       <button class="back" data-back aria-label="Назад">‹</button>
       <div class="progress">
-        <div class="lbl">Питання 1 з 3</div>
-        <div class="bar"><i style="width:33%"></i></div>
+        <div class="lbl">Питання 1 з 2</div>
+        <div class="bar"><i style="width:50%"></i></div>
       </div>
     </div>
     <div class="q-body scroll">
       <h2>Що з цього відгукується вам найбільше?</h2>
-      <ul class="options" data-q="q1" data-next="q2">
+      <ul class="options" data-q="q1" data-next="q3">
         <li class="opt" data-val="Курортна нерухомість"><span class="ic">🏢</span> Курортна нерухомість</li>
         <li class="opt" data-val="Модульні будинки"><span class="ic">🏠</span> Модульні будинки</li>
         <li class="opt" data-val="Аграрний напрямок / оливкові дерева"><span class="ic">🌿</span> Аграрний напрямок / оливкові дерева</li>
@@ -396,41 +396,21 @@ h2{ font-size:21px; line-height:1.3; margin:0 0 16px; letter-spacing:-.01em; }
     </div>
   </section>
 
-  <!-- ==================== ЕКРАН 3 · ПИТАННЯ 2 ==================== -->
-  <section class="screen" data-screen="q2">
-    <div class="topbar">
-      <button class="back" data-back aria-label="Назад">‹</button>
-      <div class="progress">
-        <div class="lbl">Питання 2 з 3</div>
-        <div class="bar"><i style="width:66%"></i></div>
-      </div>
-    </div>
-    <div class="q-body scroll">
-      <h2>Який у вас досвід в інвестиціях на сьогодні?</h2>
-      <ul class="options" data-q="q2" data-next="q3">
-        <li class="opt" data-val="Вже інвестую, шукаю нові напрямки"><span class="ic">🚀</span> Уже інвестую — шукаю нові напрямки</li>
-        <li class="opt" data-val="Пробував(ла), хочу зрозуміти нерухомість"><span class="ic">🌍</span> Пробував(ла) інше, але хочу зрозуміти нерухомість</li>
-        <li class="opt" data-val="Досвіду нема, але дуже цікаво почати"><span class="ic">🔍</span> Досвіду нема, але дуже цікаво почати</li>
-        <li class="opt" data-val="Тільки придивляюся до теми"><span class="ic">🌱</span> Поки тільки придивляюся до теми</li>
-      </ul>
-    </div>
-  </section>
-
-  <!-- ==================== ЕКРАН 4 · ПИТАННЯ 3 (ФІЛЬТР ПРО ГРОШІ) ==================== -->
+  <!-- ==================== ЕКРАН 3 · ПИТАННЯ 2 (ФІЛЬТР ГОТОВНОСТІ) ==================== -->
   <section class="screen" data-screen="q3">
     <div class="topbar">
       <button class="back" data-back aria-label="Назад">‹</button>
       <div class="progress">
-        <div class="lbl">Питання 3 з 3</div>
+        <div class="lbl">Питання 2 з 2</div>
         <div class="bar"><i style="width:100%"></i></div>
       </div>
     </div>
     <div class="q-body scroll">
-      <h2>Будь-який старт у нерухомості потребує першого кроку — хай навіть маленького. Наскільки ви готові підійти до цього серйозно?</h2>
+      <h2>Якщо напрямок вам підійде — що готові зробити далі?</h2>
       <ul class="options" data-q="q3">
-        <li class="opt" data-val="Хочу в усьому розібратися і серйозно вникати" data-next="form"><span class="ic">🟢</span> Так, я хочу в усьому розібратися і серйозно вникати в тему</li>
-        <li class="opt" data-val="Готовий відкрити для себе тему і почати з малого" data-next="form"><span class="ic">🟢</span> Готовий(а) відкрити для себе цю тему та почати з невеликого кроку</li>
-        <li class="opt" data-val="Не готовий робити жодних кроків" data-next="reject"><span class="ic">⚪️</span> Ні, не готовий(а) робити взагалі жодних кроків</li>
+        <li class="opt" data-val="Детально вивчити модель та умови" data-next="form"><span class="ic">🟢</span> Детально вивчити модель та умови</li>
+        <li class="opt" data-val="Поспілкуватися й розглянути варіанти старту" data-next="form"><span class="ic">🟢</span> Поспілкуватися й розглянути варіанти старту</li>
+        <li class="opt" data-val="Поки не готовий(а) до наступних кроків" data-next="reject"><span class="ic">⚪️</span> Поки не готовий(а) до наступних кроків</li>
       </ul>
     </div>
   </section>
@@ -523,7 +503,7 @@ window.addEventListener('orientationchange', ()=>setTimeout(setAppHeight,120));
 
 /* ============ Стан квіза ============ */
 const state = { q1:'', q2:'', q3:'' };
-const SCREENS = ['intro','q1','q2','q3','form','reject','thankyou'];
+const SCREENS = ['intro','q1','q3','form','reject','thankyou'];
 
 function showScreen(name){
   if(!SCREENS.includes(name)) name = 'intro';
